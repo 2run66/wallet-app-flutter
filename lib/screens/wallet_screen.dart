@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cryptofont/cryptofont.dart';
 import 'package:intl/intl.dart';
+import 'package:getx_deneme/controllers/price_controller.dart';
 
 class WalletPage extends StatelessWidget {
   final String address;
+  final PriceController priceController = Get.put(PriceController());
 
   WalletPage({required this.address});
 
@@ -22,19 +24,12 @@ class WalletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mock data for assets and prices
     final List<Map<String, dynamic>> assets = [
-      {'name': 'Bitcoin', 'amount': '1.25 BTC', 'price': 40000.0, 'icon': CryptoFontIcons.btc, "color" : Colors.orange},
-      {'name': 'Ethereum', 'amount': '1.56 ETH', 'price': 2500.0, 'icon': CryptoFontIcons.eth,  "color" : Colors.deepPurple},
-      {'name': 'Avax', 'amount': '42 AVAX', 'price': 30.0, 'icon': CryptoFontIcons.avax, "color" : Colors.red},
-      {'name': 'Solana', 'amount': '20 SOL', 'price': 150.0, 'icon': CryptoFontIcons.sol, 'color': Colors.blue[900]},
-      {'name': 'BNB', 'amount': '400 BNB', 'price': 300.0, 'icon': CryptoFontIcons.bnb,  "color" : Colors.yellow[700]},
-      {'name': 'Avax', 'amount': '42 AVAX', 'price': 30.0, 'icon': CryptoFontIcons.avax, "color" : Colors.red},
-      {'name': 'Solana', 'amount': '20 SOL', 'price': 150.0, 'icon': CryptoFontIcons.sol, 'color': Colors.blue[900]},
-      {'name': 'BNB', 'amount': '400 BNB', 'price': 300.0, 'icon': CryptoFontIcons.bnb,  "color" : Colors.yellow[700]},
-      {'name': 'Avax', 'amount': '42 AVAX', 'price': 30.0, 'icon': CryptoFontIcons.avax, "color" : Colors.red},
-      {'name': 'Solana', 'amount': '20 SOL', 'price': 150.0, 'icon': CryptoFontIcons.sol, 'color': Colors.blue[900]},
-      {'name': 'BNB', 'amount': '400 BNB', 'price': 300.0, 'icon': CryptoFontIcons.bnb,  "color" : Colors.yellow[700]},
+      {'name': 'Bitcoin', 'amount': '1.25 BTC', 'icon': CryptoFontIcons.btc, 'symbol': 'btcusdt', 'color': Colors.orange},
+      {'name': 'Ethereum', 'amount': '1.56 ETH', 'icon': CryptoFontIcons.eth, 'symbol': 'ethusdt', 'color': Colors.deepPurple},
+      {'name': 'Avax', 'amount': '42 AVAX', 'icon': CryptoFontIcons.avax, 'symbol': 'avaxusdt', 'color': Colors.red},
+      {'name': 'Solana', 'amount': '20 SOL', 'icon': CryptoFontIcons.sol, 'symbol': 'solusdt', 'color': Colors.blue[900]},
+      {'name': 'BNB', 'amount': '400 BNB', 'icon': CryptoFontIcons.bnb, 'symbol': 'bnbusdt', 'color': Colors.yellow[700]},
     ];
 
     return Scaffold(
@@ -44,7 +39,7 @@ class WalletPage extends StatelessWidget {
         backgroundColor: Colors.blue,
       ),
       body: Container(
-        color: Colors.white, // Set the background color of the entire screen
+        color: Colors.white,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -69,7 +64,7 @@ class WalletPage extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 5,
                             blurRadius: 10,
-                            offset: const Offset(0, 3), // changes position of shadow
+                            offset: const Offset(0, 3),
                           ),
                         ],
                       ),
@@ -81,7 +76,7 @@ class WalletPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis, // Truncate the address text
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -95,7 +90,7 @@ class WalletPage extends StatelessWidget {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 5,
                             blurRadius: 10,
-                            offset: const Offset(0, 3), // changes position of shadow
+                            offset: const Offset(0, 3),
                           ),
                         ],
                       ),
@@ -140,7 +135,7 @@ class WalletPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
@@ -171,79 +166,83 @@ class WalletPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Column(
                             children: assets.map((asset) {
-                              double amount = double.tryParse(asset['amount'].split(' ')[0]) ?? 0.0;
-                              double value = amount * asset['price'];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5.0),
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Colors.white, width: 1),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.15),
-                                        spreadRadius: 1,
-                                        blurRadius: 3,
-                                        offset: const Offset(0, 3), // changes position of shadow
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(asset['icon'], color: asset["color"], size: 24),
-                                          const SizedBox(width: 10),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                asset['name'],
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
+                              return Obx(() {
+                                double price = priceController.prices[asset['symbol']] ?? 0.0;
+                                double amount = double.tryParse(asset['amount'].split(' ')[0]) ?? 0.0;
+                                double value = amount * price;
+
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(color: Colors.white, width: 1),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.15),
+                                          spreadRadius: 1,
+                                          blurRadius: 3,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(asset['icon'], color: asset['color'], size: 24),
+                                            const SizedBox(width: 10),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  asset['name'],
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                '\$${formatPrice(asset['price'])}',
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontStyle: FontStyle.italic,
-                                                  color: Colors.grey,
+                                                Text(
+                                                  '\$${formatPrice(price)}',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontStyle: FontStyle.italic,
+                                                    color: Colors.grey,
+                                                  ),
                                                 ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              asset['amount'],
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black,
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            asset['amount'],
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black,
                                             ),
-                                          ),
-                                          Text(
-                                            '\$${formatPrice(value)}',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontStyle: FontStyle.italic,
-                                              color: Colors.grey,
+                                            Text(
+                                              '\$${formatPrice(value)}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.grey,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              });
                             }).toList(),
                           ),
                         ),
