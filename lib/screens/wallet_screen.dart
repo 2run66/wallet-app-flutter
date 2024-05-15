@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cryptofont/cryptofont.dart';
 import 'package:intl/intl.dart';
 import 'package:getx_deneme/controllers/price_controller.dart';
+import '../styles/style.dart';
 
 class WalletPage extends StatelessWidget {
   final String address;
@@ -25,56 +26,48 @@ class WalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> assets = [
-      {'name': 'Bitcoin', 'amount': '1.25 BTC', 'icon': CryptoFontIcons.btc, 'symbol': 'btcusdt', 'color': Colors.orange},
-      {'name': 'Ethereum', 'amount': '1.56 ETH', 'icon': CryptoFontIcons.eth, 'symbol': 'ethusdt', 'color': Colors.deepPurple},
-      {'name': 'Avax', 'amount': '42 AVAX', 'icon': CryptoFontIcons.avax, 'symbol': 'avaxusdt', 'color': Colors.red},
-      {'name': 'Solana', 'amount': '20 SOL', 'icon': CryptoFontIcons.sol, 'symbol': 'solusdt', 'color': Colors.blue[900]},
-      {'name': 'BNB', 'amount': '400 BNB', 'icon': CryptoFontIcons.bnb, 'symbol': 'bnbusdt', 'color': Colors.yellow[700]},
+      {'name': 'Bitcoin', 'amount': '1.25 BTC', 'price': 40000.0, 'icon': CryptoFontIcons.btc, 'color': Colors.orange},
+      {'name': 'Ethereum', 'amount': '1.56 ETH', 'price': 2500.0, 'icon': CryptoFontIcons.eth, 'color': Colors.deepPurple},
+      {'name': 'Avax', 'amount': '42 AVAX', 'price': 30.0, 'icon': CryptoFontIcons.avax, 'color': Colors.red},
+      {'name': 'Solana', 'amount': '20 SOL', 'price': 150.0, 'icon': CryptoFontIcons.sol, 'color': Colors.blue[900]},
+      {'name': 'BNB', 'amount': '400 BNB', 'price': 300.0, 'icon': CryptoFontIcons.bnb, 'color': Colors.yellow[700]},
     ];
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Crypto Wallet'),
-        backgroundColor: Colors.blue,
+        title: const Text('Crypto Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: AppStyles.backgroundColor,
       ),
       body: Container(
-        color: Colors.white,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppStyles.backgroundColor, AppStyles.secondaryColor],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.white],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
+                margin: const EdgeInsets.all(20.0),
+                decoration: AppStyles.bottomRoundedDecoration(),
                 child: Column(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 10,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        ),
+                        color: Colors.black.withOpacity(0.3),
                       ),
                       child: Text(
                         truncateAddress(address),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppStyles.whiteTextStyle(18, FontWeight.bold),
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -83,21 +76,13 @@ class WalletPage extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 60),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 10,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
                       ),
                       child: const Text(
                         '0 CRP',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -108,32 +93,35 @@ class WalletPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Deposit action
-                          },
-                          child: const Text('DEPOSIT'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blue,
-                            padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                        Flexible(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Deposit action
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              backgroundColor: AppStyles.primaryColor,
                             ),
+                            child: Text('DEPOSIT', style: AppStyles.buttonTextStyle()),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Withdrawal action
-                          },
-                          child: const Text('WITHDRAWAL'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.blue,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                        const SizedBox(width: 10), // Add spacing between buttons
+                        Flexible(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Withdrawal action
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              backgroundColor: AppStyles.primaryColor,
                             ),
+                            child: Text('WITHDRAWAL', style: AppStyles.buttonTextStyle()),
                           ),
                         ),
                       ],
@@ -152,7 +140,7 @@ class WalletPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -243,6 +231,7 @@ class WalletPage extends StatelessWidget {
                                   ),
                                 );
                               });
+                              return AssetItem(asset: asset, formatPrice: formatPrice);
                             }).toList(),
                           ),
                         ),
@@ -253,6 +242,64 @@ class WalletPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class AssetItem extends StatelessWidget {
+  final Map<String, dynamic> asset;
+  final String Function(double) formatPrice;
+
+  const AssetItem({required this.asset, required this.formatPrice});
+
+  @override
+  Widget build(BuildContext context) {
+    double amount = double.tryParse(asset['amount'].split(' ')[0]) ?? 0.0;
+    double value = amount * asset['price'];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: AppStyles.assetContainerDecoration(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(asset['icon'], color: asset['color'], size: 24),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      asset['name'],
+                      style: AppStyles.whiteTextStyle(16, FontWeight.bold),
+                    ),
+                    Text(
+                      '\$${formatPrice(asset['price'])}',
+                      style: AppStyles.greyTextStyle(14, FontStyle.italic),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  asset['amount'],
+                  style: AppStyles.whiteTextStyle(16),
+                ),
+                Text(
+                  '\$${formatPrice(value)}',
+                  style: AppStyles.greyTextStyle(14, FontStyle.italic),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
