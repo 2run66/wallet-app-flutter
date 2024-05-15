@@ -1,13 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:cryptofont/cryptofont.dart';
 import 'package:intl/intl.dart';
-import 'package:getx_deneme/controllers/price_controller.dart';
+// import 'package:getx_deneme/controllers/price_controller.dart';
 import '../styles/style.dart';
 
 class WalletPage extends StatelessWidget {
   final String address;
-  final PriceController priceController = Get.put(PriceController());
+  // final PriceController priceController = Get.put(PriceController());
 
   WalletPage({required this.address});
 
@@ -31,15 +33,14 @@ class WalletPage extends StatelessWidget {
       {'name': 'Avax', 'amount': '42 AVAX', 'price': 30.0, 'icon': CryptoFontIcons.avax, 'color': Colors.red},
       {'name': 'Solana', 'amount': '20 SOL', 'price': 150.0, 'icon': CryptoFontIcons.sol, 'color': Colors.blue[900]},
       {'name': 'BNB', 'amount': '400 BNB', 'price': 300.0, 'icon': CryptoFontIcons.bnb, 'color': Colors.yellow[700]},
+      {'name': 'Avax', 'amount': '42 AVAX', 'price': 30.0, 'icon': CryptoFontIcons.avax, 'color': Colors.red},
+      {'name': 'Solana', 'amount': '20 SOL', 'price': 150.0, 'icon': CryptoFontIcons.sol, 'color': Colors.blue[900]},
+      {'name': 'BNB', 'amount': '400 BNB', 'price': 300.0, 'icon': CryptoFontIcons.bnb, 'color': Colors.yellow[700]},
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Crypto Wallet', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        backgroundColor: AppStyles.backgroundColor,
-      ),
       body: Container(
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [AppStyles.backgroundColor, AppStyles.secondaryColor],
@@ -50,6 +51,7 @@ class WalletPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 50),
               Container(
                 padding: const EdgeInsets.all(20.0),
                 margin: const EdgeInsets.all(20.0),
@@ -59,10 +61,7 @@ class WalletPage extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        ),
+                        borderRadius: BorderRadius.circular(15),
                         color: Colors.black.withOpacity(0.3),
                       ),
                       child: Text(
@@ -74,7 +73,7 @@ class WalletPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 60),
+                     padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 60),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(20),
@@ -93,36 +92,44 @@ class WalletPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Flexible(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Deposit action
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                        Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Withdrawal action
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
+                                  shape: CircleBorder(
+
+                                  ),
+                                  backgroundColor: Colors.black.withOpacity(0.3),
+                                ),
+                                child: const Icon(FontAwesomeIcons.arrowUp,size: 30, color: Colors.white),
                               ),
-                              backgroundColor: AppStyles.primaryColor,
-                            ),
-                            child: Text('DEPOSIT', style: AppStyles.buttonTextStyle()),
-                          ),
+
+                              Text("SEND",style: AppStyles.whiteTextStyle(16,FontWeight.bold),)
+                            ]
                         ),
                         const SizedBox(width: 10), // Add spacing between buttons
-                        Flexible(
-                          child: ElevatedButton(
+                        Column(
+                          children: [
+                            ElevatedButton(
                             onPressed: () {
                               // Withdrawal action
                             },
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                              shape: CircleBorder(
+
                               ),
-                              backgroundColor: AppStyles.primaryColor,
+                              backgroundColor: Colors.black.withOpacity(0.3),
                             ),
-                            child: Text('WITHDRAWAL', style: AppStyles.buttonTextStyle()),
+                            child: const Icon(FontAwesomeIcons.arrowDown,size: 30, color: Colors.white),
                           ),
+
+                            Text("WITHDRAW",style: AppStyles.whiteTextStyle(16,FontWeight.bold),)
+                          ]
                         ),
                       ],
                     ),
@@ -154,28 +161,13 @@ class WalletPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Column(
                             children: assets.map((asset) {
-                              return Obx(() {
-                                double price = priceController.prices[asset['symbol']] ?? 0.0;
-                                double amount = double.tryParse(asset['amount'].split(' ')[0]) ?? 0.0;
-                                double value = amount * price;
+
 
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.white, width: 1),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.15),
-                                          spreadRadius: 1,
-                                          blurRadius: 3,
-                                          offset: const Offset(0, 3),
-                                        ),
-                                      ],
-                                    ),
+                                    decoration: AppStyles.assetContainerDecoration(),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
@@ -188,19 +180,11 @@ class WalletPage extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   asset['name'],
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
+                                                  style: AppStyles.whiteTextStyle(16, FontWeight.bold),
                                                 ),
                                                 Text(
-                                                  '\$${formatPrice(price)}',
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontStyle: FontStyle.italic,
-                                                    color: Colors.grey,
-                                                  ),
+                                                  '\$${formatPrice(asset['price'])}',
+                                                  style: AppStyles.greyTextStyle(14, FontStyle.italic),
                                                 ),
                                               ],
                                             ),
@@ -211,18 +195,11 @@ class WalletPage extends StatelessWidget {
                                           children: [
                                             Text(
                                               asset['amount'],
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black,
-                                              ),
+                                              style: AppStyles.whiteTextStyle(16),
                                             ),
                                             Text(
-                                              '\$${formatPrice(value)}',
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontStyle: FontStyle.italic,
-                                                color: Colors.grey,
-                                              ),
+                                              '\$${formatPrice(3)}',
+                                              style: AppStyles.greyTextStyle(14, FontStyle.italic),
                                             ),
                                           ],
                                         ),
@@ -230,7 +207,7 @@ class WalletPage extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              });
+
                               return AssetItem(asset: asset, formatPrice: formatPrice);
                             }).toList(),
                           ),

@@ -30,6 +30,7 @@ class AppStyles {
   static BoxDecoration bottomRoundedDecoration() {
     return BoxDecoration(
       image: DecorationImage(
+        opacity: 0.8,
         image: AssetImage("assets/wallet-back.jpg"),
         fit: BoxFit.cover,
       ),
