@@ -10,7 +10,7 @@ class AppStyles {
 
   static BoxDecoration containerDecoration() {
     return BoxDecoration(
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         colors: [gradientStartColor, gradientEndColor],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
@@ -21,7 +21,7 @@ class AppStyles {
           color: Colors.black.withOpacity(0.3),
           spreadRadius: 5,
           blurRadius: 10,
-          offset: Offset(0, 3),
+          offset: const Offset(0, 3),
         ),
       ],
     );
@@ -29,41 +29,41 @@ class AppStyles {
 
   static BoxDecoration bottomRoundedDecoration() {
     return BoxDecoration(
-      image: DecorationImage(
+      image: const DecorationImage(
         opacity: 0.8,
         image: AssetImage("assets/wallet-back.jpg"),
         fit: BoxFit.cover,
       ),
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         colors: [gradientStartColor, gradientEndColor],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: BorderRadius.circular(15)
+      ,
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.3),
-          spreadRadius: 5,
+          color: Colors.black.withOpacity(0.6),
+          spreadRadius: 3,
           blurRadius: 10,
-          offset: Offset(0, 3),
+          offset: const Offset(0, 3),
         ),
       ],
     );
   }
 
-  Widget blurredBackground() {
+  static Widget blurredBackground() {
     return Container(
       decoration: bottomRoundedDecoration(), // Apply the custom decoration
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // Adjust sigmaX and sigmaY for blur level
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        // Adjust sigmaX and sigmaY for blur level
         child: Container(
           color: Colors.black.withOpacity(0), // Keep it transparent
         ),
       ),
     );
   }
-
-
 
   static BoxDecoration buttonDecoration() {
     return BoxDecoration(
@@ -73,13 +73,14 @@ class AppStyles {
   }
 
   static TextStyle buttonTextStyle() {
-    return TextStyle(
+    return const TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.w700,
     );
   }
 
-  static TextStyle whiteTextStyle(double fontSize, [FontWeight fontWeight = FontWeight.normal]) {
+  static TextStyle whiteTextStyle(double fontSize,
+      [FontWeight fontWeight = FontWeight.normal]) {
     return TextStyle(
       color: Colors.white,
       fontSize: fontSize,
@@ -87,7 +88,8 @@ class AppStyles {
     );
   }
 
-  static TextStyle greyTextStyle(double fontSize, [FontStyle fontStyle = FontStyle.normal]) {
+  static TextStyle greyTextStyle(double fontSize,
+      [FontStyle fontStyle = FontStyle.normal]) {
     return TextStyle(
       color: Colors.grey,
       fontSize: fontSize,
@@ -95,14 +97,49 @@ class AppStyles {
     );
   }
 
+  static TextStyle neonTextStyle(double fontSize, Color color) {
+    return TextStyle(
+      fontSize: fontSize,
+      color: color,
+      shadows: [
+        Shadow(
+          blurRadius: 10.0,
+          color: color,
+          offset: Offset(0, 0),
+        ),
+      ],
+    );
+  }
+
   static BoxDecoration assetContainerDecoration() {
     return BoxDecoration(
-      gradient: LinearGradient(
-        colors: [primaryColor, secondaryColor],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      borderRadius: BorderRadius.circular(10),
-    );
+        gradient: const LinearGradient(
+          colors: [primaryColor, secondaryColor],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: const Offset(0, 3),
+          )
+        ]);
+  }
+
+  static BoxDecoration keypadContainerDecoration() {
+    return BoxDecoration(
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(50),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 3,
+            offset: const Offset(0, 3),
+          )
+        ]);
   }
 }

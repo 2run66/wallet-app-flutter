@@ -43,6 +43,10 @@ dependencies:
   cryptofont: ^1.0.2+1
   intl: ^0.17.0
   web_socket_channel: ^2.1.0
+  http: ^0.13.3
+  flip_card: ^0.5.0
+  shared_preferences: ^2.0.6
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +65,16 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - assets/pen-legendary.jpg
+    - assets/pen-magical.jpg
+    - assets/pen-gold.jpg
+    - assets/pen-silver.jpg
+    - assets/pen-wood.jpg
     - assets/wallet-back.jpg
+    - assets/password-back.jpg
+    - assets/wallet-icon.png
+
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

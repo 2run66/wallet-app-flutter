@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/main_controller.dart';
-import 'wallet_screen.dart'; // Import the WalletPage
+import 'wallet_screen.dart';
 
 class CreateWalletScreen extends StatelessWidget {
   CreateWalletScreen({super.key});
@@ -38,7 +39,7 @@ class CreateWalletScreen extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 5,
-                          offset: Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
@@ -160,7 +161,7 @@ class CreateWalletScreen extends StatelessWidget {
     );
   }
 
-  void _confirmMnemonicOrder(BuildContext context, List<String> correctOrder) {
+  void _confirmMnemonicOrder(BuildContext context, List<String> correctOrder) async {
     List<String> userOrder = List<String>.filled(correctOrder.length, "", growable: false);
     _selectedMnemonicOrder.forEach((key, value) {
       userOrder[value - 1] = key;
@@ -170,6 +171,7 @@ class CreateWalletScreen extends StatelessWidget {
         userOrder.asMap().entries.every((entry) => entry.value == correctOrder[entry.key]);
 
     if (isCorrect) {
+      await _saveToLocalStorage(_mainController.address.value, userOrder);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => WalletPage(address: _mainController.address.value)),
@@ -196,4 +198,9 @@ class CreateWalletScreen extends StatelessWidget {
     }
   }
 
+  Future<void> _saveToLocalStorage(String address, List<String> mnemonic) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('address', address);
+    await prefs.setStringList('mnemonic', mnemonic);
+  }
 }
