@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/main_controller.dart';
 import 'wallet_screen.dart';
+import 'create_password_screen.dart'; // Import the CreatePasswordScreen
 
 class CreateWalletScreen extends StatelessWidget {
   CreateWalletScreen({super.key});
@@ -17,10 +18,7 @@ class CreateWalletScreen extends StatelessWidget {
     List<String> _mnemonic = List<String>.from(_mainController.mnemonic.value)..shuffle(Random());
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Confirm Phrases"),
-      ),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           Center(
@@ -29,17 +27,44 @@ class CreateWalletScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Spacer(flex: 2),
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.4),
+                          offset: Offset(0, -3),
+                          blurRadius: 50,
+                          spreadRadius: 5,
+                        ),
+                        BoxShadow(
+                          color: Colors.purple.withOpacity(0.4),
+                          offset: Offset(0, 3),
+                          blurRadius: 50,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Image.asset('assets/wallet-icon.png', height: 180),
+                  ),
+                  const SizedBox(height: 40.0),
                   Container(
                     padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
+                          color: Colors.blue.withOpacity(0.5),
                           spreadRadius: 1,
                           blurRadius: 5,
                           offset: const Offset(0, 3),
+                        ),
+                        BoxShadow(
+                          color: Colors.purple.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, -3),
                         ),
                       ],
                     ),
@@ -48,7 +73,7 @@ class CreateWalletScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white,
                         fontFamily: 'Roboto', // Using a modern font
                       ),
                       textAlign: TextAlign.center,
@@ -64,7 +89,7 @@ class CreateWalletScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 50),
                   Obx(() => Wrap(
                     spacing: 8.0, // gap between adjacent chips
                     runSpacing: 4.0, // gap between lines
@@ -76,6 +101,7 @@ class CreateWalletScreen extends StatelessWidget {
                           item,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                         selected: order != null,
@@ -96,8 +122,8 @@ class CreateWalletScreen extends StatelessWidget {
                             }
                           }
                         },
-                        backgroundColor: Colors.grey[200],
-                        selectedColor: Colors.blue.withOpacity(0.5),
+                        backgroundColor: Colors.grey[800],
+                        selectedColor: Colors.blue.withOpacity(1),
                         showCheckmark: false, // Disable the checkmark
                         avatar: order != null
                             ? CircleAvatar(
@@ -121,6 +147,13 @@ class CreateWalletScreen extends StatelessWidget {
                       );
                     }).toList(),
                   )),
+                  IconButton(
+                    icon: Icon(Icons.refresh, color: Colors.blue),
+                    onPressed: () {
+                      _selectedMnemonicOrder.clear();
+                    },
+                  ),
+                  Spacer(flex: 3),
                 ],
               ),
             ),
@@ -131,26 +164,26 @@ class CreateWalletScreen extends StatelessWidget {
             right: 20,
             child: Container(
               width: MediaQuery.of(context).size.width * 0.90, // 90% of the screen width
-              child: OutlinedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   _confirmMnemonicOrder(context, List<String>.from(_mainController.mnemonic.value));
                 },
                 child: const Text(
                   "Confirm",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.5)),
-                  side: MaterialStateProperty.all(const BorderSide(color: Colors.blue, width: 2.0)),
-                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 20,
                   ),
                 ),
               ),
@@ -172,11 +205,7 @@ class CreateWalletScreen extends StatelessWidget {
 
     if (isCorrect) {
       await _saveToLocalStorage(_mainController.address.value, userOrder);
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => WalletPage(address: _mainController.address.value)),
-            (Route<dynamic> route) => false,
-      );
+      Get.to(() => CreatePasswordScreen());
     } else {
       showDialog(
         context: context,

@@ -10,6 +10,7 @@ import 'package:getx_deneme/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/main_controller.dart';
+import 'screens/create_password_screen.dart'; // Import the CreatePasswordScreen
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/wallet', page: () => WalletPage(address: '')),
         GetPage(name: '/password', page: () => const PasswordScreen()), // Add PasswordScreen route
         GetPage(name: '/import', page: () => ImportWalletScreen()), // Add ImportWalletScreen route
+        GetPage(name: '/create_password', page: () => CreatePasswordScreen()), // Add CreatePasswordScreen route
       ],
     );
   }

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_deneme/screens/import_wallet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert'; // for the utf8.encode method
+
 import 'wallet_screen.dart';
 import 'home_screen.dart'; // Import the new HomeScreen file
 import '../styles/style.dart'; // Import the styles file
@@ -14,7 +17,6 @@ class PasswordScreen extends StatefulWidget {
 }
 
 class _PasswordScreenState extends State<PasswordScreen> {
-  final String _mockPassword = '669700';
   String _enteredPassword = '';
   String _errorMessage = 'Please Enter Your Password';
 
@@ -35,40 +37,24 @@ class _PasswordScreenState extends State<PasswordScreen> {
   }
 
   void _checkPassword() async {
-    if (_enteredPassword == _mockPassword) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? address = prefs.getString('address');
-      if (address != null) {
-        Get.offAll(() => WalletPage(address: address));
-      }
-    } else {
-      setState(() {
-        _errorMessage = 'Incorrect password. Please try again.';
-        _enteredPassword = ''; // Reset the entered password
-      });
-    }
-  }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedPasswordHash = prefs.getString('password_hash');
 
-  void _onKeyPressed(String value) {
-    setState(() {
-      if (value == 'C') {
-        _enteredPassword = '';
-        _errorMessage = 'Please Enter Your Password';
-      } else if (value == 'Enter') {
-        _checkPassword();
-      } else {
-        if (_enteredPassword.length < 6) {
-          _enteredPassword += value;
-          if (_enteredPassword.length == 6) {
-            _checkPassword();
-          }
+    if (storedPasswordHash != null) {
+      String enteredPasswordHash = sha256.convert(utf8.encode(_enteredPassword)).toString();
+
+      if (enteredPasswordHash == storedPasswordHash) {
+        String? address = prefs.getString('address');
+        if (address != null) {
+          Get.offAll(() => WalletPage(address: address));
         }
+      } else {
+        setState(() {
+          _errorMessage = 'Incorrect password. Please try again.';
+          _enteredPassword = ''; // Reset the entered password
+        });
       }
-    });
-  }
-
-  String _getDisplayPassword() {
-    return '*' * _enteredPassword.length + ' ' * (6 - _enteredPassword.length);
+    }
   }
 
   void _onForgotPassword() {
@@ -120,19 +106,33 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               Text(
                 _errorMessage,
                 style: TextStyle(color: _errorMessage == 'Please Enter Your Password' ? Colors.grey : Colors.red),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Container(
+                padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.8),
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                    BoxShadow(
+                      color: Colors.purple.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, -3),
+                    ),
+                  ],
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextField(
                   style: TextStyle(color: Colors.white),
                   obscureText: true,

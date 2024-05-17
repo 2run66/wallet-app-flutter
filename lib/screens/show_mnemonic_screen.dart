@@ -12,10 +12,7 @@ class ShowMnemonicScreen extends StatelessWidget {
     final mnemonicWords = mnemonic.split(" ");
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Mnemonic Phrase'),
-      ),
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           Center(
@@ -24,17 +21,38 @@ class ShowMnemonicScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Spacer(flex: 2), // Adding Spacer to push the logo and mnemonic upwards
+                  Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.4),
+                          offset: Offset(0, -3),
+                          blurRadius: 50,
+                          spreadRadius: 5,
+                        ),
+                        BoxShadow(
+                          color: Colors.purple.withOpacity(0.4),
+                          offset: Offset(0, 3),
+                          blurRadius: 50,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Image.asset('assets/wallet-icon.png', height: 180),
+                  ),
+                  const SizedBox(height: 40.0), // Adjusted spacing
                   const Text(
                     'Your Mnemonic Phrase',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 20.0),
                   const Text(
-                    'Pick mnemonic phrases in order as you saved',
+                    'Save mnemonic phrases in a secure way!',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey,
@@ -42,7 +60,7 @@ class ShowMnemonicScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30), // Adjusted spacing
                   Wrap(
                     spacing: 10.0,
                     runSpacing: 10.0,
@@ -51,25 +69,35 @@ class ShowMnemonicScreen extends StatelessWidget {
                         width: 100, // Fixed width for each box
                         padding: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.black,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.blue.withOpacity(0.5),
                               spreadRadius: 1,
                               blurRadius: 5,
                               offset: Offset(0, 3), // changes position of shadow
+                            ),
+                            BoxShadow(
+                              color: Colors.purple.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: Offset(0, -3), // changes position of shadow
                             ),
                           ],
                         ),
                         child: Text(
                           '${index + 1}. ${mnemonicWords[index]}',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       );
                     }),
                   ),
+                  Spacer(flex: 4), // Adding Spacer to maintain the button position at the bottom
                 ],
               ),
             ),
@@ -80,26 +108,26 @@ class ShowMnemonicScreen extends StatelessWidget {
             right: 20,
             child: Container(
               width: MediaQuery.of(context).size.width * 0.90, // 90% of the screen width
-              child: OutlinedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Get.to(() => CreateWalletScreen());
                 },
                 child: const Text(
                   "Done",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue.withOpacity(0.5)),
-                  side: MaterialStateProperty.all(const BorderSide(color: Colors.blue, width: 2.0)),
-                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 15, horizontal: 20)),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                    horizontal: 20,
                   ),
                 ),
               ),
