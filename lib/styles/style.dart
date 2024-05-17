@@ -113,21 +113,28 @@ class AppStyles {
 
   static BoxDecoration assetContainerDecoration() {
     return BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [primaryColor, secondaryColor],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+      gradient: LinearGradient(
+        colors: [
+          Color(0xFF1E1E1E),
+          Color(0xFF3C3C3C),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        stops: [0.0, 1.0],
+      ),
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.5),
+          spreadRadius: 1,
+          blurRadius: 10,
+          offset: const Offset(0, 3),
         ),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: const Offset(0, 3),
-          )
-        ]);
+      ],
+    );
   }
+
+
 
   static BoxDecoration keypadContainerDecoration() {
     return BoxDecoration(

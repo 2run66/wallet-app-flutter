@@ -80,9 +80,13 @@ class WalletPage extends StatelessWidget {
           height: double.infinity,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppStyles.backgroundColor, AppStyles.secondaryColor],
-              begin: Alignment.bottomRight,
-              end: Alignment.topLeft,
+              colors: [
+                Color(0xFF232323),
+                Colors.black
+              ],
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              stops: [0.0, 1.0],
             ),
           ),
           child: SingleChildScrollView(
