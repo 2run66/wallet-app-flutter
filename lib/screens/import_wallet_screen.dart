@@ -59,7 +59,7 @@ class ImportWalletScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             const Text(
-              'Enter a 6-digit numerical password',
+              'Enter mnemonic words to import your wallet ',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,

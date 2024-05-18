@@ -4,6 +4,7 @@ import 'package:getx_deneme/screens/import_wallet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert'; // for the utf8.encode method
+import 'package:local_auth/local_auth.dart';
 
 import 'wallet_screen.dart';
 import 'home_screen.dart'; // Import the new HomeScreen file
@@ -19,11 +20,14 @@ class PasswordScreen extends StatefulWidget {
 class _PasswordScreenState extends State<PasswordScreen> {
   String _enteredPassword = '';
   String _errorMessage = 'Please Enter Your Password';
+  bool _showBiometricButton = false;
+  final LocalAuthentication auth = LocalAuthentication();
 
   @override
   void initState() {
     super.initState();
     _checkCredentials();
+    _loadBiometricPreference();
   }
 
   void _checkCredentials() async {
@@ -54,6 +58,53 @@ class _PasswordScreenState extends State<PasswordScreen> {
           _enteredPassword = ''; // Reset the entered password
         });
       }
+    }
+  }
+
+  Future<void> _loadBiometricPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? useBiometrics = prefs.getBool('use_biometrics');
+    if (useBiometrics != null && useBiometrics) {
+      setState(() {
+        _showBiometricButton = true;
+      });
+      _checkBiometrics();
+    }
+  }
+
+  Future<void> _checkBiometrics() async {
+    bool canCheckBiometrics = await auth.canCheckBiometrics;
+    if (canCheckBiometrics) {
+      _authenticate();
+    }
+  }
+
+  Future<void> _authenticate() async {
+    try {
+      bool authenticated = await auth.authenticate(
+        localizedReason: 'Please authenticate to unlock your wallet',
+        options: const AuthenticationOptions(
+          biometricOnly: true,
+          stickyAuth: true,
+        ),
+      );
+
+      if (authenticated) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('use_biometrics', true);
+        String? address = prefs.getString('address');
+        if (address != null) {
+          Get.offAll(() => WalletPage(address: address));
+        }
+      } else {
+        setState(() {
+          _errorMessage = 'Biometric authentication failed';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error: ${e.toString()}';
+      });
     }
   }
 
@@ -172,10 +223,27 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 child: Text('Unlock', style: TextStyle(fontSize: 18)),
               ),
               const SizedBox(height: 20),
-              const Text(
-                "Use Biometric Authentication",
-                style: TextStyle(color: Colors.blueAccent),
-              ),
+              if (_showBiometricButton)
+                GestureDetector(
+                  onTap: _authenticate,
+                  child: const Text(
+                    "Use Biometric Authentication",
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+              if (!_showBiometricButton)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _showBiometricButton = true;
+                      _checkBiometrics();
+                    });
+                  },
+                  child: const Text(
+                    "Enable Biometric Authentication",
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
               const Spacer(),
               GestureDetector(
                 onTap: _onForgotPassword,
