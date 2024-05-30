@@ -49,6 +49,8 @@ dependencies:
   shimmer: ^2.0.0
   crypto: ^3.0.3
   local_auth: ^2.1.4
+  yaml: ^3.1.2
+  web3dart: ^2.6.1
 
 dev_dependencies:
   flutter_test:
@@ -75,7 +77,7 @@ flutter:
     - assets/wallet-back.jpg
     - assets/password-back.jpg
     - assets/wallet-icon.png
-
+    - assets/chain_configs.yaml
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

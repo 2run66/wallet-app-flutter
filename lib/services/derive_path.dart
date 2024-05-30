@@ -1,7 +1,5 @@
 import 'package:bip32/bip32.dart' as bip32;
-import 'dart:convert';
-import 'dart:typed_data';
-
+import 'package:hex/hex.dart';
 import 'package:getx_deneme/services/generate_seed.dart';
 
 // Assuming Ethereum uses m/44'/60'/0'/0 derivation path
