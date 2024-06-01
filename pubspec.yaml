@@ -53,6 +53,7 @@ dependencies:
   web3dart: ^2.6.1
   qr_flutter: ^4.0.0
   fl_chart: ^0.68.0
+  mobile_scanner: ^2.0.0
 
 dev_dependencies:
   flutter_test:

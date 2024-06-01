@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:cryptofont/cryptofont.dart';
 import 'package:flutter/services.dart';
 import 'package:getx_deneme/screens/withdrawal_confirmation_screen.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class WithdrawalScreen extends StatefulWidget {
   final String selectedToken;
@@ -51,17 +52,8 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
     'Bnb': 'BNB',
   };
 
-
-  bool isAddressPasted = false;
   bool showConfirmation = false;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedToken = widget.selectedToken;
-    selectedChain = _findChainByToken(selectedToken);
-    print(selectedToken);
-  }
+  String addressWarning = '';
 
   String _findChainByToken(String token) {
     for (var entry in tokens.entries) {
@@ -77,9 +69,16 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
     if (clipboardData != null && clipboardData.text != null) {
       setState(() {
         addressController.text = clipboardData.text!;
-        isAddressPasted = true;
+        _validateAddress();
       });
     }
+  }
+
+  void _resetAddress() {
+    setState(() {
+      addressController.text = '';
+      addressWarning = '';
+    });
   }
 
   void _setMaxAmount() {
@@ -89,15 +88,101 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
   }
 
   void _navigateToConfirmation() {
-    setState(() {
-      showConfirmation = true;
-    });
+    if (_isValidAddress(addressController.text) && addressController.text.isNotEmpty && amountController.text.isNotEmpty) {
+      setState(() {
+        showConfirmation = true;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter a valid address and amount.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   void _navigateBack() {
     setState(() {
       showConfirmation = false;
     });
+  }
+
+  void _openCameraModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.black.withOpacity(0.8),
+      builder: (context) => Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                icon: Icon(Icons.close, color: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            Expanded(
+              child: MobileScanner(
+                onDetect: (barcode, args) {
+                  final String code = barcode.rawValue ?? '';
+                  if (_isValidAddress(code)) {
+                    setState(() {
+                      addressController.text = code;
+                      addressWarning = '';
+                    });
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Invalid QR code.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool _isValidAddress(String address) {
+    // Example regex for Ethereum address validation
+    final regex = RegExp(r'^(0x)?[0-9a-fA-F]{40}$');
+    return regex.hasMatch(address);
+  }
+
+  void _validateAddress() {
+    setState(() {
+      if (_isValidAddress(addressController.text)) {
+        addressWarning = '';
+      } else {
+        addressWarning = 'Invalid address format';
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedToken = widget.selectedToken;
+    selectedChain = _findChainByToken(selectedToken);
+    addressController.addListener(_validateAddress);
+  }
+
+  @override
+  void dispose() {
+    addressController.removeListener(_validateAddress);
+    addressController.dispose();
+    amountController.dispose();
+    super.dispose();
   }
 
   @override
@@ -261,6 +346,11 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   ),
                 ),
                 SizedBox(height: 10),
+                if (addressWarning.isNotEmpty)
+                  Text(
+                    addressWarning,
+                    style: TextStyle(color: Colors.redAccent, fontSize: 14),
+                  ),
                 Container(
                   width: double.infinity,
                   child: TextField(
@@ -276,10 +366,14 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          isAddressPasted ? Icons.check : Icons.paste,
+                          addressController.text.isNotEmpty ? Icons.close : Icons.paste,
                           color: Colors.white,
                         ),
-                        onPressed: _pasteFromClipboard,
+                        onPressed: addressController.text.isNotEmpty ? _resetAddress : _pasteFromClipboard,
+                      ),
+                      prefixIcon: IconButton(
+                        icon: Icon(Icons.qr_code, color: Colors.white),
+                        onPressed: () => _openCameraModal(context),
                       ),
                     ),
                   ),
@@ -299,6 +393,7 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                   child: TextField(
                     controller: amountController,
                     style: TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: 'Enter amount',
                       hintStyle: TextStyle(color: Colors.white54),
@@ -321,10 +416,10 @@ class _WithdrawalScreenState extends State<WithdrawalScreen> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (addressController.text.isEmpty) {
+                      if (addressController.text.isEmpty || ! _isValidAddress(addressController.text)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please enter a withdrawal address'),
+                            content: Text('Please enter a valid withdrawal address'),
                             duration: Duration(seconds: 2),
                           ),
                         );

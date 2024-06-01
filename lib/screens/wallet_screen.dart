@@ -272,7 +272,7 @@ class WalletPageContent extends StatelessWidget {
           title,
           style: TextStyle(
             color: activeTab.value == index ? Colors.pinkAccent : Colors.white,
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             shadows: activeTab.value == index
                 ? [

@@ -21,6 +21,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   OverlayEntry? _overlayEntry;
   bool _isOverlayVisible = false;
+  bool _isMiddleButtonSelected = false;
 
   BoxDecoration bottomNavBarDecoration() {
     return BoxDecoration(
@@ -36,7 +37,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(0.5),
-          spreadRadius: 1,
+          spreadRadius: 10,
           blurRadius: 10,
           offset: Offset(0, 3),
         ),
@@ -44,14 +45,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 
-  BoxDecoration middleButtonDecoration(bool isSelected) {
+  BoxDecoration middleButtonDecoration() {
     return BoxDecoration(
       color: Colors.pink,
       shape: BoxShape.circle,
-      boxShadow: isSelected
+      boxShadow: _isMiddleButtonSelected
           ? [
         BoxShadow(
-          color: Colors.purple.withOpacity(0.4),
+          color: Colors.black.withOpacity(0.4),
           spreadRadius: 4,
           blurRadius: 8,
         ),
@@ -60,21 +61,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
     );
   }
 
-  BoxDecoration normalButtonDecoration(bool isSelected) {
+  BoxDecoration normalButtonDecoration(int index) {
     return BoxDecoration(
-      boxShadow: isSelected
-          ? [
-        BoxShadow(
-          color: Colors.blueAccent.withOpacity(0.4),
-          spreadRadius: 1,
-          blurRadius: 10,
-        ),
-      ]
-          : [],
+      boxShadow: [],
     );
   }
 
   void _showSubButtons() {
+    setState(() {
+      _isMiddleButtonSelected = !_isMiddleButtonSelected;
+    });
     if (_isOverlayVisible) {
       _overlayEntry?.remove();
       _isOverlayVisible = false;
@@ -129,7 +125,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return WithdrawalScreen(selectedToken: 'ETH',);
+        return WithdrawalScreen(
+          selectedToken: 'ETH',
+        );
       },
     );
   }
@@ -142,7 +140,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         items: [
           BottomNavigationBarItem(
             icon: Container(
-              decoration: normalButtonDecoration(widget.selectedIndex.value == 0),
+              decoration: normalButtonDecoration(0),
               child: Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Icon(Icons.account_balance_wallet),
@@ -153,13 +151,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
           BottomNavigationBarItem(
             icon: GestureDetector(
               onTap: _showSubButtons,
-              child: Transform.rotate(
-                angle: 1.5708, // Rotate 90 degrees (in radians)
-                child: Container(
-                  decoration: middleButtonDecoration(widget.selectedIndex.value == 1),
-                  padding: EdgeInsets.all(6.0),
-                  child: Center(
-                    child: Icon(Icons.swap_horiz, color: Colors.white),
+              child: Container(
+                decoration: middleButtonDecoration(),
+                child: Transform.rotate(
+                  angle: 1.5708, // Rotate 90 degrees (in radians)
+                  child: Container(
+                    padding: EdgeInsets.all(6.0),
+                    child: Center(
+                      child: Icon(Icons.swap_horiz, color: Colors.white),
+                    ),
                   ),
                 ),
               ),
@@ -170,7 +170,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             icon: GestureDetector(
               onTap: () => _showSettings(context),
               child: Container(
-                decoration: normalButtonDecoration(widget.selectedIndex.value == 2),
+                decoration: normalButtonDecoration(2),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Icon(Icons.settings),
@@ -181,10 +181,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
         ],
         currentIndex: widget.selectedIndex.value,
-        selectedItemColor: Colors.blueAccent,
+        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         backgroundColor: Colors.transparent,
-        onTap: widget.onItemTapped,
+        onTap: (index) {
+          // Prevent the middle button from being selected
+          if (index != 1) {
+            widget.onItemTapped(index);
+            setState(() {
+              _isMiddleButtonSelected = false;
+            });
+          } else {
+            _showSubButtons();
+          }
+        },
       ),
     ));
   }

@@ -68,7 +68,7 @@ class AssetItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(asset['icon'], color: asset['color'], size: 24),
+                  Icon(asset['icon'], color: Colors.white, size: 24),
                   const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

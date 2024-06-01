@@ -74,7 +74,7 @@ class _SubButtonOverlayState extends State<SubButtonOverlay> with SingleTickerPr
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.arrow_upward),
+                    Icon(Icons.arrow_downward),
                     SizedBox(height: 4),
                     Text('Deposit', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   ],
@@ -93,7 +93,7 @@ class _SubButtonOverlayState extends State<SubButtonOverlay> with SingleTickerPr
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.arrow_downward),
+                    Icon(Icons.arrow_upward),
                     SizedBox(height: 4),
                     Text('Withdraw', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
                   ],

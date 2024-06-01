@@ -1,21 +1,9 @@
 import 'package:flutter/material.dart';
 
-class WithdrawalConfirmation extends StatelessWidget {
-  final String chain;
-  final String token;
-  final String address;
-  final String amount;
-  final String gasPrice;
-  final VoidCallback onCancel;
+class TransactionDetailScreen extends StatelessWidget {
+  final Map<String, String> transaction;
 
-  WithdrawalConfirmation({
-    required this.chain,
-    required this.token,
-    required this.address,
-    required this.amount,
-    required this.gasPrice,
-    required this.onCancel,
-  });
+  TransactionDetailScreen({required this.transaction});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +33,7 @@ class WithdrawalConfirmation extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Confirm Withdrawal',
+                  'Transaction Details',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -54,43 +42,16 @@ class WithdrawalConfirmation extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.close, color: Colors.white),
-                  onPressed: onCancel,
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
             ),
             SizedBox(height: 20),
-            _buildInfoTile('Chain', chain),
-            _buildInfoTile('Token', token),
-            _buildInfoTile('Address', address),
-            _buildInfoTile('Amount', amount),
-            _buildInfoTile('Gas Price', '$gasPrice GWEI'),
-            SizedBox(height: 100),
-            Center(
-              child: Text(
-                'Ensure the address is correct. Incorrect addresses may result in loss of funds.',
-                style: TextStyle(
-                  color: Colors.redAccent,
-                  fontSize: 14,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle confirmation logic here
-                },
-                child: Text('Confirm'),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
+            _buildInfoTile('Date', transaction['date'] ?? 'N/A'),
+            _buildInfoTile('Amount', transaction['amount'] ?? 'N/A'),
+            _buildInfoTile('Status', transaction['status'] ?? 'N/A'),
+            // Add more details as needed
+
           ],
         ),
       ),

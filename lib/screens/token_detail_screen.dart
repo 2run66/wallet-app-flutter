@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../controllers/price_controller.dart';
 import 'withdrawal_screen.dart';
 import 'deposit_screen.dart';
+import 'package:getx_deneme/screens/transaction_history_screen.dart';
 import '../styles/style.dart';
 
 class TokenDetailScreen extends StatelessWidget {
@@ -43,6 +44,10 @@ class TokenDetailScreen extends StatelessWidget {
         .map((entry) => FlSpot(entry.key.toDouble(), entry.value))
         .toList() ??
         [];
+
+    double firstDayPrice = historicalGraphData.isNotEmpty ? historicalGraphData.first.y : 0.0;
+    double lastDayPrice = historicalGraphData.isNotEmpty ? historicalGraphData.last.y : 0.0;
+    bool isPriceHigher = lastDayPrice >= firstDayPrice;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -153,13 +158,13 @@ class TokenDetailScreen extends StatelessWidget {
                             LineChartBarData(
                               spots: historicalGraphData,
                               isCurved: true,
-                              color: Colors.green,
+                              color: isPriceHigher ? Colors.green : Colors.pink,
                               barWidth: 3,
                               belowBarData: BarAreaData(
                                 show: true,
                                 gradient: LinearGradient(
                                   colors: [
-                                    Colors.green.withOpacity(0.8),
+                                    (isPriceHigher ? Colors.green : Colors.pink).withOpacity(0.8),
                                     Colors.transparent,
                                   ],
                                   begin: Alignment.topCenter,
@@ -181,7 +186,7 @@ class TokenDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: ElevatedButton(
+                        child: ElevatedButton.icon(
                           onPressed: () {
                             showModalBottomSheet(
                               context: context,
@@ -191,19 +196,21 @@ class TokenDetailScreen extends StatelessWidget {
                               },
                             );
                           },
-                          child: Text('Deposit'),
+                          icon: Icon(Icons.arrow_downward, color: Colors.white),
+                          label: Text('Deposit'),
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.transparent,
+                            side: BorderSide(color: Colors.white),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 80),
+                      SizedBox(width: 20),
                       Expanded(
-                        child: ElevatedButton(
+                        child: ElevatedButton.icon(
                           onPressed: () {
                             showModalBottomSheet(
                               context: context,
@@ -213,10 +220,12 @@ class TokenDetailScreen extends StatelessWidget {
                               },
                             );
                           },
-                          child: Text('Withdraw'),
+                          icon: Icon(Icons.arrow_upward, color: Colors.white),
+                          label: Text('Withdraw'),
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor: Colors.blue,
+                            backgroundColor: Colors.transparent,
+                            side: BorderSide(color: Colors.white),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -241,33 +250,45 @@ class TokenDetailScreen extends StatelessWidget {
                       itemCount: transactionHistory.length,
                       itemBuilder: (context, index) {
                         final transaction = transactionHistory[index];
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          padding: EdgeInsets.all(10),
-                          decoration: AppStyles.assetContainerDecoration(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(tokenIcon, color: Colors.white, size: 24),
-                                  const SizedBox(width: 10),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        transaction['date']!,
-                                        style: AppStyles.whiteTextStyle(16, FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                transaction['amount']!,
-                                style: AppStyles.whiteTextStyle(16),
-                              ),
-                            ],
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) {
+                                return TransactionDetailScreen(transaction: transaction);
+                              },
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.all(10),
+                            decoration: AppStyles.assetContainerDecoration(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(tokenIcon, color: Colors.white, size: 24),
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          transaction['date']!,
+                                          style: AppStyles.whiteTextStyle(16, FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  transaction['amount']!,
+                                  style: AppStyles.whiteTextStyle(16),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
