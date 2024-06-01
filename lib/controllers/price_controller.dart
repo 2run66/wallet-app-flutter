@@ -9,6 +9,7 @@ class PriceController extends GetxController {
   var tempPrices = <String, double>{};
   var dailyOpenPrices = <String, double>{}.obs; // Store daily open prices here
   var changePercentages = <String, double>{}.obs; // Store change percentages here
+  var historicalPrices = <String, List<double>>{}.obs; // Store historical prices for each token
   var isConnected = false.obs;
   late IOWebSocketChannel channel;
   late Timer timer;
@@ -17,6 +18,7 @@ class PriceController extends GetxController {
   void onInit() {
     super.onInit();
     fetchDailyOpenPrices();
+    fetchHistoricalPrices();
     connectWebSocket();
     startPriceSync();
     startChangePercentageSync();
@@ -100,6 +102,25 @@ class PriceController extends GetxController {
         }
       } catch (e) {
         print('Error fetching daily open price for $symbol: $e');
+      }
+    }
+  }
+
+  void fetchHistoricalPrices() async {
+    final symbols = ['btcusdt', 'ethusdt', 'avaxusdt', 'solusdt', 'bnbusdt'];
+    for (var symbol in symbols) {
+      final url = Uri.parse('https://api.binance.com/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=1d&limit=30');
+      try {
+        final response = await http.get(url);
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body) as List;
+          List<double> prices = data.map((item) => double.parse(item[4].toString())).toList(); // Closing prices
+          historicalPrices[symbol] = prices;
+        } else {
+          print('Failed to fetch historical prices for $symbol. Status code: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error fetching historical prices for $symbol: $e');
       }
     }
   }

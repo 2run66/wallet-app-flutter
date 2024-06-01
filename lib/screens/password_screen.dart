@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_deneme/screens/import_wallet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert'; // for the utf8.encode method
 import 'package:local_auth/local_auth.dart';
+import 'package:flutter/services.dart'; // Import this for PlatformException
 
 import 'wallet_screen.dart';
 import 'home_screen.dart'; // Import the new HomeScreen file
+import 'import_wallet_screen.dart'; // Import the ImportWalletScreen file
 import '../styles/style.dart'; // Import the styles file
 
 class PasswordScreen extends StatefulWidget {
@@ -99,6 +100,16 @@ class _PasswordScreenState extends State<PasswordScreen> {
       } else {
         setState(() {
           _errorMessage = 'Biometric authentication failed';
+        });
+      }
+    } on PlatformException catch (e) {
+      if (e.code == 'NotAvailable') {
+        setState(() {
+          _errorMessage = 'You don\'t have any biometric authentication set up';
+        });
+      } else {
+        setState(() {
+          _errorMessage = 'Error: ${e.message}';
         });
       }
     } catch (e) {

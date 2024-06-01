@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:getx_deneme/screens/create_wallet_screen.dart';
-import 'package:getx_deneme/screens/import_wallet_screen.dart';
-import 'package:getx_deneme/screens/show_mnemonic_screen.dart';
 import 'package:getx_deneme/screens/wallet_screen.dart';
-import 'package:getx_deneme/screens/password_screen.dart';
 import 'package:getx_deneme/screens/home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:getx_deneme/screens/password_screen.dart';
+import 'package:getx_deneme/screens/create_password_screen.dart';
+import 'package:getx_deneme/screens/import_wallet_screen.dart';
 import 'controllers/main_controller.dart';
-import 'screens/create_password_screen.dart'; // Import the CreatePasswordScreen
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +28,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/password', // Always start with the password screen
       getPages: [
         GetPage(name: '/', page: () => const MyHomePage(title: 'Flutter Demo Home Page')),
-        GetPage(name: '/wallet', page: () => WalletPage(address: '')),
         GetPage(name: '/password', page: () => const PasswordScreen()), // Add PasswordScreen route
         GetPage(name: '/import', page: () => ImportWalletScreen()), // Add ImportWalletScreen route
         GetPage(name: '/create_password', page: () => CreatePasswordScreen()), // Add CreatePasswordScreen route
+        GetPage(name: '/wallet', page: () => WalletPage(address: '0x0effsadad79756')), // Add WalletPage route
       ],
     );
   }
