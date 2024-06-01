@@ -93,6 +93,15 @@ class _DepositScreenState extends State<DepositScreen> {
               ),
             ),
             SizedBox(height: 10),
+
+            SizedBox(height: 20),
+            QrImageView(
+              data: address,
+              version: QrVersions.auto,
+              size: 200.0,
+              backgroundColor: Colors.white,
+            ),
+            SizedBox(height: 40),
             Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -122,14 +131,7 @@ class _DepositScreenState extends State<DepositScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            QrImageView(
-              data: address,
-              version: QrVersions.auto,
-              size: 200.0,
-              backgroundColor: Colors.white,
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Text(
               'Scan the QR code or copy the address to deposit funds.',
               style: TextStyle(
