@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/main_controller.dart';
+import '../../controllers/main_controller.dart';
 import 'create_wallet_screen.dart';
-import '../services/derive_path.dart';
-import '../services/generate_address.dart';
+import '../../services/derive_path.dart';
+import '../../services/generate_address.dart';
 
 class ImportWalletScreen extends StatelessWidget {
   final List<TextEditingController> _mnemonicControllers =

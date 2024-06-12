@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:get/get.dart';
-import '../controllers/price_controller.dart';
+import '../../controllers/price_controller.dart';
 import 'withdrawal_screen.dart';
 import 'deposit_screen.dart';
-import 'package:getx_deneme/screens/transaction_history_screen.dart';
-import '../styles/style.dart';
+import 'package:getx_deneme/screens/wallet_stack/transaction_history_screen.dart';
+import '../../styles/style.dart';
 
 class TokenDetailScreen extends StatelessWidget {
   final String tokenName;

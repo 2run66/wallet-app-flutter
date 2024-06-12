@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../styles/style.dart'; // Adjust the import according to your file structure
+import '../../styles/style.dart'; // Adjust the import according to your file structure
 
 class SettingsScreen extends StatelessWidget {
   @override

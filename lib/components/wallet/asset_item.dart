@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../styles/style.dart';
-import '../screens/token_detail_screen.dart';
+import '../../styles/style.dart';
+import '../../screens/wallet_stack/token_detail_screen.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart';
 

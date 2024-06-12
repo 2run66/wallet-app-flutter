@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_deneme/screens/wallet_screen.dart';
+import 'package:getx_deneme/screens/wallet_stack/wallet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert'; // for the utf8.encode method
 
-import '../controllers/main_controller.dart';
+import '../../controllers/main_controller.dart';
 
 class CreatePasswordScreen extends StatefulWidget {
   @override

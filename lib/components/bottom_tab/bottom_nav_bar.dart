@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_deneme/screens/settings_screen.dart';
-import 'package:getx_deneme/components/sub_button.dart';
-import 'package:getx_deneme/screens/deposit_screen.dart';
-import 'package:getx_deneme/screens/withdrawal_screen.dart';
+import 'package:getx_deneme/screens/generic_app_stack/settings_screen.dart';
+import 'package:getx_deneme/components/bottom_tab/sub_button.dart';
+import 'package:getx_deneme/screens/wallet_stack/deposit_screen.dart';
+import 'package:getx_deneme/screens/wallet_stack/withdrawal_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   final RxInt selectedIndex;

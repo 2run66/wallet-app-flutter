@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_deneme/screens/import_wallet_screen.dart';
-import 'package:getx_deneme/screens/show_mnemonic_screen.dart';
+import 'package:getx_deneme/screens/wallet_creation_stack/import_wallet_screen.dart';
+import 'package:getx_deneme/screens/wallet_creation_stack/show_mnemonic_screen.dart';
 import 'package:getx_deneme/services/derive_path.dart';
 import 'package:getx_deneme/services/generate_address.dart';
 import 'package:getx_deneme/services/generate_seed.dart';

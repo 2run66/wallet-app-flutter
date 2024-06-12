@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
-import '../styles/style.dart';
+import '../../styles/style.dart';
 import 'dart:math';
 
 class NftItem extends StatelessWidget {

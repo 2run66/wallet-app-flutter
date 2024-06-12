@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cryptofont/cryptofont.dart';
-import '../controllers/chain_controller.dart';
-import '../models/chain_model.dart';
+import '../../controllers/chain_controller.dart';
+import '../../models/chain_model.dart';
 
 class ChainDropdown extends StatelessWidget {
   final String address;

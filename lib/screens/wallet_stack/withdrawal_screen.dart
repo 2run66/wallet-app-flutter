@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cryptofont/cryptofont.dart';
 import 'package:flutter/services.dart';
-import 'package:getx_deneme/screens/withdrawal_confirmation_screen.dart';
+import 'package:getx_deneme/screens/wallet_stack/withdrawal_confirmation_screen.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class WithdrawalScreen extends StatefulWidget {

@@ -7,9 +7,9 @@ import 'package:local_auth/local_auth.dart';
 import 'package:flutter/services.dart'; // Import this for PlatformException
 
 import 'wallet_screen.dart';
-import 'home_screen.dart'; // Import the new HomeScreen file
-import 'import_wallet_screen.dart'; // Import the ImportWalletScreen file
-import '../styles/style.dart'; // Import the styles file
+import '../wallet_creation_stack/wallet_home_screen.dart'; // Import the new HomeScreen file
+import '../wallet_creation_stack/import_wallet_screen.dart'; // Import the ImportWalletScreen file
+import '../../styles/style.dart'; // Import the styles file
 
 class PasswordScreen extends StatefulWidget {
   const PasswordScreen({super.key});

@@ -81,6 +81,7 @@ flutter:
     - assets/password-back.jpg
     - assets/wallet-icon.png
     - assets/chain_configs.yaml
+    - assets/wallet-icon2.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

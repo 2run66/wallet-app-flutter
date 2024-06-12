@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../controllers/main_controller.dart';
-import 'wallet_screen.dart';
+import '../../controllers/main_controller.dart';
+import '../wallet_stack/wallet_screen.dart';
 import 'create_password_screen.dart'; // Import the CreatePasswordScreen
 
 class CreateWalletScreen extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_deneme/screens/create_wallet_screen.dart';
+import 'package:getx_deneme/screens/wallet_creation_stack/create_wallet_screen.dart';
 
 class ShowMnemonicScreen extends StatelessWidget {
   final String mnemonic;

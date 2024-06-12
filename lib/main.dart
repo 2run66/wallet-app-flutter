@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_deneme/screens/wallet_screen.dart';
-import 'package:getx_deneme/screens/home_screen.dart';
-import 'package:getx_deneme/screens/password_screen.dart';
-import 'package:getx_deneme/screens/create_password_screen.dart';
-import 'package:getx_deneme/screens/import_wallet_screen.dart';
+import 'package:getx_deneme/screens/wallet_stack/wallet_screen.dart';
+import 'package:getx_deneme/screens/wallet_creation_stack/wallet_home_screen.dart';
+import 'package:getx_deneme/screens/wallet_stack/password_screen.dart';
+import 'package:getx_deneme/screens/wallet_creation_stack/create_password_screen.dart';
+import 'package:getx_deneme/screens/wallet_creation_stack/import_wallet_screen.dart';
 import 'controllers/main_controller.dart';
 
 void main() async {
